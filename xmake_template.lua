@@ -6,7 +6,7 @@ includes("lib/commonlibsse")
 
 -- set project
 set_project("commonlibsse-template")
-set_version("0.0.0")
+set_version("1.0.0")
 set_license("GPL-3.0")
 
 -- set defaults
@@ -31,7 +31,7 @@ target("commonlibsse-template")
     -- add commonlibsse plugin
     add_rules("commonlibsse.plugin", {
         name = "commonlibsse-template",
-        author = "qudix",
+        author = "styyx",
         description = "SKSE64 plugin template using CommonLibSSE"
     })
 
@@ -40,3 +40,23 @@ target("commonlibsse-template")
     add_headerfiles("src/**.h")
     add_includedirs("src")
     set_pcxxheader("src/pch.h")
+
+after_build(function(target)
+    local copy = function(env, ext)
+        for _, env in pairs(env:split(";")) do
+            if os.exists(env) then
+                local plugins = path.join(env, ext, "SKSE/Plugins")
+                os.mkdir(plugins)
+                os.trycp(target:targetfile(), plugins)
+                os.trycp(target:symbolfile(), plugins)
+                -- Copy .ini files or other extras
+                -- os.trycp("$(projectdir)/contrib/**.ini", plugins)
+            end
+        end
+    end
+    if os.getenv("XSE_TES5_MODS_PATH") then
+        copy(os.getenv("XSE_TES5_MODS_PATH"), target:name())
+    elseif os.getenv("XSE_TES5_GAME_PATH") then
+        copy(os.getenv("XSE_TES5_GAME_PATH"), "Data")
+    end    
+end)

@@ -8,12 +8,13 @@ This is a basic plugin template using CommonLibSSE.
 
 ## Getting Started
 ```bat
-git clone --recurse-submodules https://github.com/libxse/commonlibsse-template
+git clone https://github.com/Styyx1/commonlibsse-template --recursive
 cd commonlibsse-template
 ```
 
 ### Build
-To build the project, run the following command:
+To build the project you first need to run the ``projectSetup.py`` and enter the data it asks for.   
+Then run the following command:
 ```bat
 xmake build
 ```

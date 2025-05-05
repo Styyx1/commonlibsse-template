@@ -32,9 +32,18 @@ def customize_xmake_template(template_path, output_path):
         config_lines += 'set_config("rex_json", true)\n'
     if need_toml:
         config_lines += 'set_config("rex_toml", true)\n'
-
-    # Insert config lines before -- targets section
-    template = re.sub(r'(-- targets)', config_lines + r'\1', template)
+    
+    # add extra files to the template
+    extra_lines = ""
+    if need_ini:
+        extra_lines += 'add_extrafiles("release/**.ini")\n'
+    if need_json:
+        extra_lines += 'add_extrafiles("release/**.json")\n'
+    if need_toml:
+        extra_lines += 'add_extrafiles("release/**.toml")\n'
+        
+    # Insert config and extra file lines before -- targets
+    template = re.sub(r'(-- targets)', config_lines + extra_lines + r'\1', template)
 
     # Write result to output file
     with open(output_path, 'w') as f:

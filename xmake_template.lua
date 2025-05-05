@@ -49,8 +49,8 @@ after_build(function(target)
                 os.mkdir(plugins)
                 os.trycp(target:targetfile(), plugins)
                 os.trycp(target:symbolfile(), plugins)
-                -- Copy .ini files or other extras
-                -- os.trycp("$(projectdir)/contrib/**.ini", plugins)
+                -- Copy config files or other extras
+                os.trycp("$(projectdir)/release/**", plugins)
             end
         end
     end
